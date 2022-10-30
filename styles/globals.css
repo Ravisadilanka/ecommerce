@@ -20,15 +20,15 @@ a {
 max-width: 1400px; 
 margin: auto;
 width: 100%;
-
 }
 .layout{
   padding: 10px;
+  background-color: var(--background-color);
 }
 
 .navbar-container{
   display: flex;
-  justify-content: space-between;
+  justify-content:space-between;
   margin: 6px 18px;
   position: relative;
 }
@@ -68,6 +68,25 @@ span.text-red {
   color: gray;
   font-size: 18px;
 
+}
+ul{
+  display: inline-flex;
+  flex-direction: row;
+  list-style: none;
+  position: relative;
+  color: gray;
+  font-size: 18px;
+}
+ul li{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.signup{
+  margin-left: 35%;
+}
+.toggle{
+  border-style: none;
+  background-color: transparent;
 }
 .cart-icon{
   font-size: 25px;

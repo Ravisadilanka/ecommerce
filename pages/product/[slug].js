@@ -1,13 +1,15 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar} from 'react-icons/ai'
-import { Product } from '../../components';
+import { HeroBanner, Product } from '../../components';
 
+
+import BlockContent from "@sanity/block-content-to-react";
 import { client, urlFor} from '../../lib/client'
 import { useStateContext } from '../../context/StateContext'
 
 
 const ProductDetails = ({product,products}) => {
-    const {image, name, details, price} = product;
+    const {image, name, specification,description, price,rating} = product;
     const [index, setIndex] = useState(0);
     const {decQty, incQty, qty, onAdd, setShowCart} = useStateContext();
 
@@ -16,6 +18,57 @@ const ProductDetails = ({product,products}) => {
 
         setShowCart(true);
     }
+
+    const serializers = {
+        types: {
+            block: (props) => {
+            const { style = "normal" } = props.node;
+
+            if (/^h\d/.test(style)) {
+                const level = style.replace(/[^\d]/g, "");
+                return React.createElement(
+                style,
+                { className: `heading-${level}` },
+                props.children
+                );
+            }
+    
+            if (style === "blockquote") {
+                return <blockquote>- {props.children}</blockquote>;
+            }
+
+            // Fall back to default handling
+            return BlockContent.defaultSerializers.types.block(props);
+            },
+            code: (props) =>
+            console.log("code block", props) || (
+                <pre data-language={props.node.language}>
+                <code>{props.node.code}</code>
+                </pre>
+            )
+        },
+        list: (props) =>
+            console.log("list", props) ||
+            (props.type === "bullet" ? (
+            <ul>{props.children}</ul>
+            ) : (
+            <ol>{props.children}</ol>
+            )),
+        listItem: (props) =>
+            console.log("list", props) ||
+            (props.type === "bullet" ? (
+            <li>{props.children}</li>
+            ) : (
+            <li>{props.children}</li>
+            )),
+        marks: {
+            strong: (props) =>
+            console.log("strong", props) || <strong>{props.children}</strong>,
+            em: (props) => console.log("em", props) || <em>{props.children}</em>,
+            code: (props) => console.log("code", props) || <code>{props.children}</code>
+        }
+        };
+        
 
     return (
         <div>
@@ -50,8 +103,12 @@ const ProductDetails = ({product,products}) => {
                             (20)
                         </p>
                     </div>
-                    <h4>Details: </h4>
-                    <p>{details}</p>
+                    <h4>Specification: </h4>
+                    <div>
+                    <BlockContent
+                        blocks={product.specification.filter(({ _type }) => _type === "block")}
+                    />
+                    </div>
                     <p className='price'>${price}</p>
                     <div className="quantity">
                         <h3>Quantity:</h3>
@@ -67,7 +124,13 @@ const ProductDetails = ({product,products}) => {
                     </div>
                 </div>
             </div>
-
+            <h4>Description: </h4>
+            <div>
+                <BlockContent
+                    blocks={product.description.filter(({ _type }) => _type === "block")}
+                />
+            </div>
+            
             <div className="maylike-products-wrapper">
                 <h2>You may also like</h2>
                 <div className="marquee">
