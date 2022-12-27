@@ -4,6 +4,7 @@ import { SiEbay } from 'react-icons/si'
 
 const Footer = () => {
   return (
+    <div className="gradient-bg-welcome">
     <div className='footer-container'>
       <p>2022 JSM Headphones All rights reserverd</p>
       <p className='icons'>
@@ -12,6 +13,7 @@ const Footer = () => {
         <AiFillFacebook/>
         <SiEbay/>
       </p>
+    </div>
     </div>
   )
 }

@@ -12,7 +12,7 @@ const Navbar = () => {
   const [show,setShow] = useState(false);  
   
   return (
-    
+    <div className="gradient-bg-welcome">
     <div className='navbar-container'>
       <p className='logo' >
         <Link href="/"> JSM Headphones </Link>
@@ -30,6 +30,7 @@ const Navbar = () => {
           {showCart && <Cart/>}
         </li>
       </ul>
+    </div>
     </div>
   )
 }
